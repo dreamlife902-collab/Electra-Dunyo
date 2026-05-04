@@ -1,0 +1,124 @@
+<!doctype html>
+<html class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Outfit:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 30px rgba(0,255,136,0.4), 0 0 60px rgba(0,255,136,0.2); }
+      50% { box-shadow: 0 0 50px rgba(0,255,136,0.7), 0 0 100px rgba(0,255,136,0.4); }
+    }
+    @keyframes charge {
+      0% { height: 0%; }
+      100% { height: 85%; }
+    }
+    @keyframes spark {
+      0%, 100% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+    @keyframes float-up {
+      0% { transform: translateY(20px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    .battery-glow { animation: pulse-glow 2s ease-in-out infinite; }
+    .charge-fill { animation: charge 2s ease-out forwards; }
+    .spark { animation: spark 1.5s ease-in-out infinite; }
+    .float-up { animation: float-up 0.8s ease-out forwards; }
+    .float-up-2 { animation: float-up 0.8s ease-out 0.2s forwards; opacity: 0; }
+    .float-up-3 { animation: float-up 0.8s ease-out 0.4s forwards; opacity: 0; }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js" type="text/javascript"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app" class="h-full w-full overflow-auto flex items-center justify-center" style="background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0f 100%);">
+   <div class="text-center px-6 py-12 max-w-lg w-full"><!-- Sparks -->
+    <div class="relative mx-auto w-48 h-48 mb-8">
+     <div class="spark absolute top-2 right-4 text-3xl">
+      ⚡
+     </div>
+     <div class="spark absolute bottom-8 left-2 text-2xl" style="animation-delay:0.5s;">
+      ⚡
+     </div>
+     <div class="spark absolute top-12 left-8 text-xl" style="animation-delay:1s;">
+      ⚡
+     </div><!-- Battery SVG -->
+     <div class="battery-glow rounded-2xl mx-auto w-28 h-44 relative border-4 flex items-end overflow-hidden" style="border-color: #00ff88;">
+      <div class="absolute top-[-10px] left-1/2 -translate-x-1/2 w-10 h-4 rounded-t-md" style="background:#00ff88;"></div>
+      <div class="charge-fill w-full rounded-b-lg" style="background: linear-gradient(to top, #00ff88, #00cc6a);"></div>
+     </div>
+    </div><!-- Brand -->
+    <h1 id="brand" class="float-up text-6xl md:text-7xl font-bold tracking-wider" style="font-family:'Bebas Neue',sans-serif; color:#00ff88;">VOLTMAX</h1><!-- Tagline -->
+    <p id="tagline" class="float-up-2 mt-4 text-xl md:text-2xl font-bold tracking-widest uppercase" style="font-family:'Outfit',sans-serif; color:#ffffff;">UNSTOPPABLE ENERGY</p><!-- Features -->
+    <div class="float-up-3 flex justify-center gap-6 mt-8 text-sm" style="font-family:'Outfit',sans-serif; color:#aaaaaa;"><span>🔋 1.5V</span> <span>⚡ Fast Charge</span> <span>🛡️ 5yr Warranty</span>
+    </div><!-- CTA --> <button id="cta" class="float-up-3 mt-10 px-10 py-4 rounded-full text-lg font-bold uppercase tracking-wider transition-all hover:scale-105" style="font-family:'Outfit',sans-serif; background:#00ff88; color:#0a0a0f;"> BUY NOW </button>
+   </div>
+  </div>
+  <script>
+    const defaultConfig = {
+      brand_name: "VOLTMAX",
+      tagline: "UNSTOPPABLE ENERGY",
+      cta_text: "BUY NOW",
+      background_color: "#0a0a0f",
+      accent_color: "#00ff88",
+      text_color: "#ffffff",
+      secondary_text_color: "#aaaaaa",
+      cta_text_color: "#0a0a0f",
+      font_family: "Bebas Neue",
+      font_size: 16
+    };
+
+    function applyConfig(config) {
+      document.getElementById('brand').textContent = config.brand_name || defaultConfig.brand_name;
+      document.getElementById('tagline').textContent = config.tagline || defaultConfig.tagline;
+      document.getElementById('cta').textContent = config.cta_text || defaultConfig.cta_text;
+
+      const accent = config.accent_color || defaultConfig.accent_color;
+      const bg = config.background_color || defaultConfig.background_color;
+      const text = config.text_color || defaultConfig.text_color;
+      const secText = config.secondary_text_color || defaultConfig.secondary_text_color;
+      const ctaText = config.cta_text_color || defaultConfig.cta_text_color;
+
+      document.getElementById('app').style.background = `radial-gradient(ellipse at center, #1a1a2e 0%, ${bg} 100%)`;
+      document.getElementById('brand').style.color = accent;
+      document.getElementById('tagline').style.color = text;
+      document.getElementById('cta').style.background = accent;
+      document.getElementById('cta').style.color = ctaText;
+
+      const font = config.font_family || defaultConfig.font_family;
+      document.getElementById('brand').style.fontFamily = `${font}, Bebas Neue, sans-serif`;
+
+      const size = config.font_size || defaultConfig.font_size;
+      document.getElementById('brand').style.fontSize = `${size * 4}px`;
+      document.getElementById('tagline').style.fontSize = `${size * 1.4}px`;
+      document.getElementById('cta').style.fontSize = `${size * 1.1}px`;
+    }
+
+    window.elementSdk.init({
+      defaultConfig,
+      onConfigChange: async (config) => applyConfig(config),
+      mapToCapabilities: (config) => ({
+        recolorables: [
+          { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+          { get: () => config.accent_color || defaultConfig.accent_color, set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+          { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+          { get: () => config.cta_text_color || defaultConfig.cta_text_color, set: (v) => { config.cta_text_color = v; window.elementSdk.setConfig({ cta_text_color: v }); } },
+          { get: () => config.secondary_text_color || defaultConfig.secondary_text_color, set: (v) => { config.secondary_text_color = v; window.elementSdk.setConfig({ secondary_text_color: v }); } }
+        ],
+        borderables: [],
+        fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+        fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+      }),
+      mapToEditPanelValues: (config) => new Map([
+        ["brand_name", config.brand_name || defaultConfig.brand_name],
+        ["tagline", config.tagline || defaultConfig.tagline],
+        ["cta_text", config.cta_text || defaultConfig.cta_text]
+      ])
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9f688354861f2332',t:'MTc3NzkwODI3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
